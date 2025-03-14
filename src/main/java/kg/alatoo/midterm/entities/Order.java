@@ -1,11 +1,6 @@
 package kg.alatoo.midterm.entities;
 
-<<<<<<< HEAD
-public class User {
-    
-}
-=======
-import java.util.List;
+import java.sql.Date;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -13,7 +8,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,17 +17,17 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private String name;
-    private String description;
-    private String username;
-    private String role;
-    private String email;
-    private String phone;
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Seller> sellers;
+    private Date orderDate;
+    private short quantity;
+    private String status;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Product product;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Point point;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private User user;
 }
->>>>>>> b24748f7c5759c99a39e9b65a36c2bf438788499

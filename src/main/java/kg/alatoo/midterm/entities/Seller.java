@@ -1,10 +1,5 @@
 package kg.alatoo.midterm.entities;
 
-<<<<<<< HEAD
-public class User {
-    
-}
-=======
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -22,17 +17,11 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class Seller {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String name;
-    private String description;
-    private String username;
-    private String role;
-    private String email;
-    private String phone;
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Seller> sellers;
+    private List<User> user;
 }
->>>>>>> b24748f7c5759c99a39e9b65a36c2bf438788499
