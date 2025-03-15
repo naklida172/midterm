@@ -10,6 +10,9 @@ import kg.alatoo.midterm.repositories.SellerRepository;
 import kg.alatoo.midterm.repositories.TagRepository;
 import kg.alatoo.midterm.repositories.UserRepository;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -44,7 +47,26 @@ public class InitData {
     @PostConstruct
     public void init() {
         System.out.println("Creating values from src\\main\\java\\kg\\alatoo\\midterm\\bootstrap\\InitData.csv");
-        
+    try (BufferedReader br = new BufferedReader(new FileReader("init-data.csv"))) {
+        String line;
+        while ((line = br.readLine()) != null) {
+            String[] values = line.split(",");
+            if (values.length < 3)
+                continue;
+            String entity = values[0];
+            String type = values[1];
+            String value = values[2];
+            String relatedEntityId = values.length > 3 ? values[3] : null; 
+            processLine(entity, type, value, relatedEntityId);
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+
+    System.out.println("Data creation from csv file is complete");
+}
+
+    public void processLine(String entity, String type, String value, String relatedEntityId){
 
     }
 
