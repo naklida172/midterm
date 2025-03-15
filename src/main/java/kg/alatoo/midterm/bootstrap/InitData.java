@@ -42,6 +42,7 @@ public class InitData {
     private Map<Long, Product> products = new HashMap<>();
     private Map<Long, Point> points = new HashMap<>();
     private Map<Long, Tag> tags = new HashMap<>();
+    private Map<Long, Order> orders = new HashMap<>();
 
     private long currentId = 1;
 
@@ -57,8 +58,7 @@ public class InitData {
                 String entity = values[0];
                 String type = values[1];
                 String value = values[2];
-                String relatedEntityId = values.length > 3 ? values[3] : null;
-                processLine(entity, type, value, relatedEntityId);
+                processLine(entity, type, value );
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -67,33 +67,41 @@ public class InitData {
         System.out.println("Data creation from csv file is complete");
     }
 
-    public void processLine(String entity, String type, String value, String relatedEntityId) {
+    private void processLine(String entity, String type, String value) {
         switch (entity) {
-/////////////////////////////////////////////////////////////////////////////////////////////////
             case "Seller":
                 if (type.equals("name")) {
                     Seller seller = Seller.builder()
-                            .id(currentId++)
-                            .name(value)
-                            .user(new ArrayList<>())
+                            .id(currentId++)           
+                            .name(value)               
+                            .user(new ArrayList<>())   
                             .build();
                     sellers.put(seller.getId(), seller);
                     sellerRepository.save(seller);
-                }
-                else if (type.equals("userRelation") && relatedEntityId != null) {
+                } else if (type.equals("userRelation") && value != null && !value.trim().isEmpty()) {
                     Seller seller = sellers.get(currentId - 1);
-                    User user = users.get(Long.parseLong(relatedEntityId));
-                    if (seller != null && user != null) {
-                        seller.getUser().add(user);
-                        user.getSellers().add(seller);
+                    if (seller != null) {
+                        String[] userIds = value.split(";");
+                        for (String userIdStr : userIds) {
+                            try {
+                                Long userId = Long.parseLong(userIdStr.trim());
+                                User user = users.get(userId);
+                                if (user != null) {
+                                    seller.getUser().add(user);
+                                    user.getSellers().add(seller);
+                                    userRepository.save(user);
+                                }
+                            } catch (NumberFormatException e) {
+                                System.err.println("Invalid user id format: " + userIdStr);
+                            }
+                        }
                         sellerRepository.save(seller);
-                        userRepository.save(user);
                     }
                 }
                 break;
-/////////////////////////////////////////////////////////////////////////////////////////////////
             case "User":
                 if (type.equals("name")) {
+                    // For Users, the name is in the value field.
                     User user = User.builder()
                             .id(currentId++)
                             .name(value)
@@ -123,13 +131,13 @@ public class InitData {
                     userRepository.save(user);
                 }
                 break;
-/////////////////////////////////////////////////////////////////////////////////////////////////
+
             case "Product":
                 if (type.equals("name")) {
-                    Seller productSeller = sellers.get(Long.parseLong(relatedEntityId));
+                    Seller productSeller = sellers.get(Long.parseLong(value));
                     Product product = Product.builder()
                             .id(currentId++)
-                            .name(value)
+                            .name("Unnamed Product") 
                             .description(null)
                             .rating((short) 0)
                             .seller(productSeller)
@@ -145,14 +153,115 @@ public class InitData {
                     Product product = products.get(currentId - 1);
                     product.setRating(Short.parseShort(value));
                     productRepository.save(product);
+                } else if (type.equals("tagRelation") && value != null && !value.trim().isEmpty()) {
+                    Product product = products.get(currentId - 1);
+                    if (product != null) {
+                        String[] tagIds = value.split(";");
+                        for (String tagIdStr : tagIds) {
+                            try {
+                                Long tagId = Long.parseLong(tagIdStr.trim());
+                                Tag tag = tags.get(tagId);
+                                if (tag != null) {
+                                    product.getTags().add(tag);
+                                    tag.getProducts().add(product);
+                                    tagRepository.save(tag);
+                                }
+                            } catch (NumberFormatException e) {
+                                System.err.println("Invalid tag id format: " + tagIdStr);
+                            }
+                        }
+                        productRepository.save(product);
+                    }
+                }
+                break;
+            case "Tag":
+                if (type.equals("name")) {
+                    Tag tag = Tag.builder()
+                            .id(currentId++)
+                            .name(value)
+                            .description(null)
+                            .products(new ArrayList<>())
+                            .build();
+                    tags.put(tag.getId(), tag);
+                    tagRepository.save(tag);
+                } else if (type.equals("description")) {
+                    Tag tag = tags.get(currentId - 1);
+                    tag.setDescription(value);
+                    tagRepository.save(tag);
+                }
+                break;
+            case "Point":
+                if (type.equals("address")) {
+                    Point point = Point.builder()
+                            .id(currentId++)
+                            .address(value)
+                            .status(null)
+                            .workTime(null)
+                            .orders(new ArrayList<>())
+                            .build();
+                    points.put(point.getId(), point);
+                    pointRepository.save(point);
+                } else if (type.equals("status")) {
+                    Point point = points.get(currentId - 1);
+                    point.setStatus(value);
+                    pointRepository.save(point);
+                } else if (type.equals("workTime")) {
+                    Point point = points.get(currentId - 1);
+                    point.setWorkTime(value);
+                    pointRepository.save(point);
+                }
+                break;
+            case "Order":
+                if (type.equals("orderDate")) {
+                    Order order = Order.builder()
+                            .id(currentId++)
+                            .orderDate(new Date())
+                            .quantity((short) 0)
+                            .status("")
+                            .build();
+                    orders.put(order.getId(), order);
+                    orderRepository.save(order);
+                } else if (type.equals("orderProduct") && value != null && !value.trim().isEmpty()) {
+                    Order order = orders.get(currentId - 1);
+                    if (order != null) {
+                        Product orderProduct = products.get(Long.parseLong(value));
+                        order.setProduct(orderProduct);
+                        orderRepository.save(order);
+                    }
+                } else if (type.equals("orderPoint") && value != null && !value.trim().isEmpty()) {
+                    Order order = orders.get(currentId - 1);
+                    if (order != null) {
+                        Point orderPoint = points.get(Long.parseLong(value));
+                        order.setPoint(orderPoint);
+                        orderRepository.save(order);
+                    }
+                } else if (type.equals("orderUser") && value != null && !value.trim().isEmpty()) {
+                    Order order = orders.get(currentId - 1);
+                    if (order != null) {
+                        User orderUser = users.get(Long.parseLong(value));
+                        order.setUser(orderUser);
+                        orderRepository.save(order);
+                    }
+                } else if (type.equals("quantity")) {
+                    Order order = orders.get(currentId - 1);
+                    if (order != null) {
+                        order.setQuantity(Short.parseShort(value));
+                        orderRepository.save(order);
+                    }
+                } else if (type.equals("status")) {
+                    Order order = orders.get(currentId - 1);
+                    if (order != null) {
+                        order.setStatus(value);
+                        orderRepository.save(order);
+                    }
                 }
                 break;
             default:
                 break;
-/////////////////////////////////////////////////////////////////////////////////////////////////
         }
     }
-
+    
+    
     @PreDestroy
     public void destroy() {
         System.out.println("Cleaning up resources");

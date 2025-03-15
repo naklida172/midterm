@@ -1,0 +1,91 @@
+entity,type,value
+Seller,name,BestSeller1
+Seller,userRelation,3;4;5
+Seller,name,TopSeller2
+Seller,userRelation,6;7
+Seller,name,QualityGoods
+Seller,userRelation,8;9
+User,name,John Doe
+User,username,johndoe
+User,role,Customer
+User,email,john@example.com
+User,phone,555-0101
+User,name,Jane Smith
+User,username,janesmith
+User,role,Customer
+User,email,jane@example.com
+User,phone,555-0102
+User,name,Robert Brown
+User,username,robertb
+User,role,Customer
+User,email,robert@example.com
+User,phone,555-0103
+User,name,Emily White
+User,username,emilyw
+User,role,Customer
+User,email,emily@example.com
+User,phone,555-0104
+User,name,Michael Green
+User,username,michaelg
+User,role,Customer
+User,email,michael@example.com
+User,phone,555-0105
+User,name,Sarah Blue
+User,username,sarahb
+User,role,Customer
+User,email,sarah@example.com
+User,phone,555-0106
+Product,name,1
+Product,description,UltraWidget is the latest widget
+Product,rating,5
+Product,tagRelation,11;12;13
+Product,name,PowerGadget,2
+Product,description,High performance gadget
+Product,rating,4
+Product,tagRelation,12;13
+Product,name,MegaTool,3
+Product,description,All-in-one tool for professionals
+Product,rating,5
+Product,tagRelation,11;13
+Tag,name,Electronics
+Tag,description,Gadgets and electronic devices
+Tag,name,Innovative
+Tag,description,Cutting-edge products
+Tag,name,Premium
+Tag,description,High quality and performance
+Point,address,101 Main Street
+Point,status,Active
+Point,workTime,8 AM - 8 PM
+Point,address,202 Side Avenue
+Point,status,Active
+Point,workTime,9 AM - 6 PM
+Order,orderDate,2025-04-01
+Order,orderProduct,4
+Order,orderPoint,17
+Order,orderUser,3
+Order,quantity,2
+Order,status,Pending
+Order,orderDate,2025-04-02
+Order,orderProduct,7
+Order,orderPoint,18
+Order,orderUser,4
+Order,quantity,1
+Order,status,Completed
+Order,orderDate,2025-04-03
+Order,orderProduct,7
+Order,orderPoint,18
+Order,orderUser,5
+Order,quantity,3
+Order,status,Shipped
+Order,orderDate,2025-04-05
+Order,orderProduct,4
+Order,orderPoint,17
+Order,orderUser,8
+Order,quantity,5
+Order,status,Processing
+Order,orderDate,2025-04-06
+Order,orderProduct,7
+Order,orderPoint,18
+Order,orderUser,9
+Order,quantity,1
+Order,status,Pending
