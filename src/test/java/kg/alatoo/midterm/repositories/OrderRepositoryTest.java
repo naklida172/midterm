@@ -28,7 +28,7 @@ public class OrderRepositoryTest {
 
         assertNotNull(savedOrder.getId());
         assertEquals("Pending", savedOrder.getStatus());
-        assertEquals(3, savedOrder.getQuantity());
+        assertEquals((short) 3, savedOrder.getQuantity());
     }
 
     @Test
@@ -44,7 +44,7 @@ public class OrderRepositoryTest {
 
         assertTrue(retrievedOrder.isPresent());
         assertEquals("Shipped", retrievedOrder.get().getStatus());
-        assertEquals(5, retrievedOrder.get().getQuantity());
+        assertEquals((short)5, retrievedOrder.get().getQuantity());
     }
 
     @Test
