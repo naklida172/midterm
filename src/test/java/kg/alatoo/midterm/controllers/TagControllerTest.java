@@ -51,4 +51,22 @@ public class TagControllerTest {
 
         verify(tagService, times(1)).getAllTags();
     }
+    
+    @Test
+    public void testGetTagById() throws Exception {
+        Tag tag = new Tag();
+        tag.setId(1L);
+        tag.setName("Electronics");
+        tag.setDescription("Electronic gadgets");
+
+        when(tagService.getTagById(1L)).thenReturn(tag);
+
+        mockMvc.perform(get("/api/tags/1")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name", is("Electronics")))
+                .andExpect(jsonPath("$.description", is("Electronic gadgets")));
+
+        verify(tagService, times(1)).getTagById(1L);
+    }
 }
