@@ -119,4 +119,15 @@ public class TagControllerTest {
 
         verify(tagService, times(1)).updateTag(eq(1L), Mockito.any(TagDTO.class));
     }
+
+    @Test
+    public void testDeleteTag() throws Exception {
+        doNothing().when(tagService).deleteTag(1L);
+
+        mockMvc.perform(delete("/api/tags/1")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        verify(tagService, times(1)).deleteTag(1L);
+    }
 }
