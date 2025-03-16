@@ -4,6 +4,7 @@ import kg.alatoo.midterm.dtos.ProductDTO;
 import kg.alatoo.midterm.entities.Product;
 import kg.alatoo.midterm.entities.Seller;
 import kg.alatoo.midterm.entities.Tag;
+import kg.alatoo.midterm.exceptions.ResourceNotFoundException;
 import kg.alatoo.midterm.mappers.ProductMapper;
 import kg.alatoo.midterm.repositories.ProductRepository;
 import kg.alatoo.midterm.repositories.SellerRepository;
@@ -29,14 +30,18 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product createProduct(ProductDTO productDTO) {
+        if (productDTO == null) {
+            throw new IllegalArgumentException("ProductDTO cannot be null.");
+        }
+
         Seller seller = sellerRepository.findById(productDTO.getSellerId())
-                .orElseThrow(() -> new RuntimeException("Seller not found with id: " + productDTO.getSellerId()));
+                .orElseThrow(() -> new ResourceNotFoundException("Seller not found with id: " + productDTO.getSellerId()));
 
         List<Tag> tags = new ArrayList<>();
         if (productDTO.getTagIds() != null) {
             for (Long tagId : productDTO.getTagIds()) {
                 Tag tag = tagRepository.findById(tagId)
-                        .orElseThrow(() -> new RuntimeException("Tag not found with id: " + tagId));
+                        .orElseThrow(() -> new ResourceNotFoundException("Tag not found with id: " + tagId));
                 tags.add(tag);
             }
         }
@@ -49,27 +54,39 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product getProductById(Long id) {
+        if (id == null) {
+            throw new IllegalArgumentException("Product ID cannot be null.");
+        }
+
         return productRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Product not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found with id: " + id));
     }
 
     @Override
     public List<Product> getAllProducts() {
-        return productRepository.findAll();
+        List<Product> products = productRepository.findAll();
+        if (products.isEmpty()) {
+            throw new ResourceNotFoundException("No products found.");
+        }
+        return products;
     }
 
     @Override
     public Product updateProduct(Long id, ProductDTO productDTO) {
+        if (id == null || productDTO == null) {
+            throw new IllegalArgumentException("Product ID and ProductDTO cannot be null.");
+        }
+
         Product existingProduct = getProductById(id);
 
         Seller seller = sellerRepository.findById(productDTO.getSellerId())
-                .orElseThrow(() -> new RuntimeException("Seller not found with id: " + productDTO.getSellerId()));
+                .orElseThrow(() -> new ResourceNotFoundException("Seller not found with id: " + productDTO.getSellerId()));
 
         List<Tag> tags = new ArrayList<>();
         if (productDTO.getTagIds() != null) {
             for (Long tagId : productDTO.getTagIds()) {
                 Tag tag = tagRepository.findById(tagId)
-                        .orElseThrow(() -> new RuntimeException("Tag not found with id: " + tagId));
+                        .orElseThrow(() -> new ResourceNotFoundException("Tag not found with id: " + tagId));
                 tags.add(tag);
             }
         }
@@ -84,6 +101,14 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void deleteProduct(Long id) {
+        if (id == null) {
+            throw new IllegalArgumentException("Product ID cannot be null.");
+        }
+
+        if (!productRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Product not found with id: " + id);
+        }
+
         productRepository.deleteById(id);
     }
 }

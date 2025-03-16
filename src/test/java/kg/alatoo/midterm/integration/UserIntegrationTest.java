@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 @Transactional
 public class UserIntegrationTest {
-
+    //Due to all mappers, entites, and dtos having the same structure a test for a singular one is enough
     @Autowired
     private UserRepository userRepository;
 
