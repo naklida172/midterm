@@ -1,8 +1,10 @@
 package kg.alatoo.midterm.controllers;
 
+import kg.alatoo.midterm.dtos.TagDTO;
 import kg.alatoo.midterm.entities.Tag;
 import kg.alatoo.midterm.services.TagService;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
@@ -51,7 +53,7 @@ public class TagControllerTest {
 
         verify(tagService, times(1)).getAllTags();
     }
-    
+
     @Test
     public void testGetTagById() throws Exception {
         Tag tag = new Tag();
@@ -69,4 +71,30 @@ public class TagControllerTest {
 
         verify(tagService, times(1)).getTagById(1L);
     }
+
+    @Test
+    public void testCreateTag() throws Exception {
+        TagDTO tagDTO = new TagDTO();
+        tagDTO.setName("NewTag");
+        tagDTO.setDescription("Description of NewTag");
+
+        Tag createdTag = new Tag();
+        createdTag.setId(1L);
+        createdTag.setName("NewTag");
+        createdTag.setDescription("Description of NewTag");
+
+        when(tagService.createTag(Mockito.any(TagDTO.class))).thenReturn(createdTag);
+
+        mockMvc.perform(post("/api/tags")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"name\": \"NewTag\", \"description\": \"Description of NewTag\"}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", is(1)))
+                .andExpect(jsonPath("$.name", is("NewTag")))
+                .andExpect(jsonPath("$.description", is("Description of NewTag")));
+
+        verify(tagService, times(1)).createTag(Mockito.any(TagDTO.class));
+    }
+
+    
 }
