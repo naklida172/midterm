@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.Matchers.*;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -96,5 +97,26 @@ public class TagControllerTest {
         verify(tagService, times(1)).createTag(Mockito.any(TagDTO.class));
     }
 
-    
+    @Test
+    public void testUpdateTag() throws Exception {
+        TagDTO tagDTO = new TagDTO();
+        tagDTO.setName("UpdatedTag");
+        tagDTO.setDescription("Updated description");
+
+        Tag updatedTag = new Tag();
+        updatedTag.setId(1L);
+        updatedTag.setName("UpdatedTag");
+        updatedTag.setDescription("Updated description");
+
+        when(tagService.updateTag(eq(1L), Mockito.any(TagDTO.class))).thenReturn(updatedTag);
+
+        mockMvc.perform(put("/api/tags/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"name\": \"UpdatedTag\", \"description\": \"Updated description\"}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name", is("UpdatedTag")))
+                .andExpect(jsonPath("$.description", is("Updated description")));
+
+        verify(tagService, times(1)).updateTag(eq(1L), Mockito.any(TagDTO.class));
+    }
 }
