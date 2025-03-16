@@ -1,12 +1,11 @@
 package kg.alatoo.midterm.controllers;
 
-import org.springframework.web.bind.annotation.RequestMapping;
+import kg.alatoo.midterm.dtos.OrderDTO;
+import kg.alatoo.midterm.entities.Order;
+import kg.alatoo.midterm.services.OrderService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import kg.alatoo.midterm.entities.Order;
-import kg.alatoo.midterm.repositories.OrderRepository;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 
 @RestController
@@ -14,38 +13,30 @@ import java.util.List;
 public class OrderController {
 
     @Autowired
-    private OrderRepository orderRepository;
+    private OrderService orderService;
 
-    @GetMapping
-    public List<Order> getAllOrders() {
-        return orderRepository.findAll();
+    @PostMapping
+    public Order createOrder(@RequestBody OrderDTO orderDTO) {
+        return orderService.createOrder(orderDTO);
     }
 
     @GetMapping("/{id}")
     public Order getOrderById(@PathVariable Long id) {
-        return orderRepository.findById(id).orElseThrow(() -> new RuntimeException("Order not found"));
+        return orderService.getOrderById(id);
     }
 
-    @PostMapping
-    public Order createOrder(@RequestBody Order order) {
-        return orderRepository.save(order);
+    @GetMapping
+    public List<Order> getAllOrders() {
+        return orderService.getAllOrders();
     }
 
     @PutMapping("/{id}")
-    public Order updateOrder(@PathVariable Long id, @RequestBody Order orderDetails) {
-        Order order = orderRepository.findById(id).orElseThrow(() -> new RuntimeException("Order not found"));
-        order.setOrderDate(orderDetails.getOrderDate());
-        order.setQuantity(orderDetails.getQuantity());
-        order.setStatus(orderDetails.getStatus());
-        order.setProduct(orderDetails.getProduct());
-        order.setPoint(orderDetails.getPoint());
-        order.setUser(orderDetails.getUser());
-        return orderRepository.save(order);
+    public Order updateOrder(@PathVariable Long id, @RequestBody OrderDTO orderDTO) {
+        return orderService.updateOrder(id, orderDTO);
     }
 
     @DeleteMapping("/{id}")
     public void deleteOrder(@PathVariable Long id) {
-        Order order = orderRepository.findById(id).orElseThrow(() -> new RuntimeException("Order not found"));
-        orderRepository.delete(order);
+        orderService.deleteOrder(id);
     }
 }

@@ -1,10 +1,10 @@
 package kg.alatoo.midterm.controllers;
 
+import kg.alatoo.midterm.dtos.SellerDTO;
+import kg.alatoo.midterm.entities.Seller;
+import kg.alatoo.midterm.services.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import kg.alatoo.midterm.entities.Seller;
-import kg.alatoo.midterm.repositories.SellerRepository;
 
 import java.util.List;
 
@@ -13,33 +13,30 @@ import java.util.List;
 public class SellerController {
 
     @Autowired
-    private SellerRepository sellerRepository;
+    private SellerService sellerService;
 
-    @GetMapping
-    public List<Seller> getAllSellers() {
-        return sellerRepository.findAll();
+    @PostMapping
+    public Seller createSeller(@RequestBody SellerDTO sellerDTO) {
+        return sellerService.createSeller(sellerDTO);
     }
 
     @GetMapping("/{id}")
     public Seller getSellerById(@PathVariable Long id) {
-        return sellerRepository.findById(id).orElseThrow(() -> new RuntimeException("Seller not found"));
+        return sellerService.getSellerById(id);
     }
 
-    @PostMapping
-    public Seller createSeller(@RequestBody Seller seller) {
-        return sellerRepository.save(seller);
+    @GetMapping
+    public List<Seller> getAllSellers() {
+        return sellerService.getAllSellers();
     }
 
     @PutMapping("/{id}")
-    public Seller updateSeller(@PathVariable Long id, @RequestBody Seller sellerDetails) {
-        Seller seller = sellerRepository.findById(id).orElseThrow(() -> new RuntimeException("Seller not found"));
-        seller.setName(sellerDetails.getName());
-        return sellerRepository.save(seller);
+    public Seller updateSeller(@PathVariable Long id, @RequestBody SellerDTO sellerDTO) {
+        return sellerService.updateSeller(id, sellerDTO);
     }
 
     @DeleteMapping("/{id}")
     public void deleteSeller(@PathVariable Long id) {
-        Seller seller = sellerRepository.findById(id).orElseThrow(() -> new RuntimeException("Seller not found"));
-        sellerRepository.delete(seller);
+        sellerService.deleteSeller(id);
     }
 }

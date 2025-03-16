@@ -1,10 +1,10 @@
 package kg.alatoo.midterm.controllers;
 
+import kg.alatoo.midterm.dtos.TagDTO;
+import kg.alatoo.midterm.entities.Tag;
+import kg.alatoo.midterm.services.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import kg.alatoo.midterm.entities.Tag;
-import kg.alatoo.midterm.repositories.TagRepository;
 
 import java.util.List;
 
@@ -13,34 +13,30 @@ import java.util.List;
 public class TagController {
 
     @Autowired
-    private TagRepository tagRepository;
+    private TagService tagService;
 
-    @GetMapping
-    public List<Tag> getAllTags() {
-        return tagRepository.findAll();
+    @PostMapping
+    public Tag createTag(@RequestBody TagDTO tagDTO) {
+        return tagService.createTag(tagDTO);
     }
 
     @GetMapping("/{id}")
     public Tag getTagById(@PathVariable Long id) {
-        return tagRepository.findById(id).orElseThrow(() -> new RuntimeException("Tag not found"));
+        return tagService.getTagById(id);
     }
 
-    @PostMapping
-    public Tag createTag(@RequestBody Tag tag) {
-        return tagRepository.save(tag);
+    @GetMapping
+    public List<Tag> getAllTags() {
+        return tagService.getAllTags();
     }
 
     @PutMapping("/{id}")
-    public Tag updateTag(@PathVariable Long id, @RequestBody Tag tagDetails) {
-        Tag tag = tagRepository.findById(id).orElseThrow(() -> new RuntimeException("Tag not found"));
-        tag.setName(tagDetails.getName());
-        tag.setDescription(tagDetails.getDescription());
-        return tagRepository.save(tag);
+    public Tag updateTag(@PathVariable Long id, @RequestBody TagDTO tagDTO) {
+        return tagService.updateTag(id, tagDTO);
     }
 
     @DeleteMapping("/{id}")
     public void deleteTag(@PathVariable Long id) {
-        Tag tag = tagRepository.findById(id).orElseThrow(() -> new RuntimeException("Tag not found"));
-        tagRepository.delete(tag);
+        tagService.deleteTag(id);
     }
 }

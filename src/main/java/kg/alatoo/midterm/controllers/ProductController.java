@@ -1,10 +1,10 @@
 package kg.alatoo.midterm.controllers;
 
+import kg.alatoo.midterm.dtos.ProductDTO;
+import kg.alatoo.midterm.entities.Product;
+import kg.alatoo.midterm.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import kg.alatoo.midterm.entities.Product;
-import kg.alatoo.midterm.repositories.ProductRepository;
 
 import java.util.List;
 
@@ -13,35 +13,30 @@ import java.util.List;
 public class ProductController {
 
     @Autowired
-    private ProductRepository productRepository;
+    private ProductService productService;
 
-    @GetMapping
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
+    @PostMapping
+    public Product createProduct(@RequestBody ProductDTO productDTO) {
+        return productService.createProduct(productDTO);
     }
 
     @GetMapping("/{id}")
     public Product getProductById(@PathVariable Long id) {
-        return productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
+        return productService.getProductById(id);
     }
 
-    @PostMapping
-    public Product createProduct(@RequestBody Product product) {
-        return productRepository.save(product);
+    @GetMapping
+    public List<Product> getAllProducts() {
+        return productService.getAllProducts();
     }
 
     @PutMapping("/{id}")
-    public Product updateProduct(@PathVariable Long id, @RequestBody Product productDetails) {
-        Product product = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
-        product.setName(productDetails.getName());
-        product.setDescription(productDetails.getDescription());
-        product.setRating(productDetails.getRating());
-        return productRepository.save(product);
+    public Product updateProduct(@PathVariable Long id, @RequestBody ProductDTO productDTO) {
+        return productService.updateProduct(id, productDTO);
     }
 
     @DeleteMapping("/{id}")
     public void deleteProduct(@PathVariable Long id) {
-        Product product = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
-        productRepository.delete(product);
+        productService.deleteProduct(id);
     }
 }

@@ -1,10 +1,10 @@
 package kg.alatoo.midterm.controllers;
 
+import kg.alatoo.midterm.dtos.UserDTO;
+import kg.alatoo.midterm.entities.User;
+import kg.alatoo.midterm.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import kg.alatoo.midterm.entities.User;
-import kg.alatoo.midterm.repositories.UserRepository;
 
 import java.util.List;
 
@@ -13,37 +13,30 @@ import java.util.List;
 public class UserController {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
-    @GetMapping
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    @PostMapping
+    public User createUser(@RequestBody UserDTO userDTO) {
+        return userService.createUser(userDTO);
     }
 
     @GetMapping("/{id}")
     public User getUserById(@PathVariable Long id) {
-        return userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+        return userService.getUserById(id);
     }
 
-    @PostMapping
-    public User createUser(@RequestBody User user) {
-        return userRepository.save(user);
+    @GetMapping
+    public List<User> getAllUsers() {
+        return userService.getAllUsers();
     }
 
     @PutMapping("/{id}")
-    public User updateUser(@PathVariable Long id, @RequestBody User userDetails) {
-        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
-        user.setName(userDetails.getName());
-        user.setUsername(userDetails.getUsername());
-        user.setRole(userDetails.getRole());
-        user.setEmail(userDetails.getEmail());
-        user.setPhone(userDetails.getPhone());
-        return userRepository.save(user);
+    public User updateUser(@PathVariable Long id, @RequestBody UserDTO userDTO) {
+        return userService.updateUser(id, userDTO);
     }
 
     @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable Long id) {
-        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
-        userRepository.delete(user);
+        userService.deleteUser(id);
     }
 }

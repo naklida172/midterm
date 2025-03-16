@@ -1,10 +1,10 @@
 package kg.alatoo.midterm.controllers;
 
+import kg.alatoo.midterm.dtos.PointDTO;
+import kg.alatoo.midterm.entities.Point;
+import kg.alatoo.midterm.services.PointService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import kg.alatoo.midterm.entities.Point;
-import kg.alatoo.midterm.repositories.PointRepository;
 
 import java.util.List;
 
@@ -13,35 +13,30 @@ import java.util.List;
 public class PointController {
 
     @Autowired
-    private PointRepository pointRepository;
+    private PointService pointService;
 
-    @GetMapping
-    public List<Point> getAllPoints() {
-        return pointRepository.findAll();
+    @PostMapping
+    public Point createPoint(@RequestBody PointDTO pointDTO) {
+        return pointService.createPoint(pointDTO);
     }
 
     @GetMapping("/{id}")
     public Point getPointById(@PathVariable Long id) {
-        return pointRepository.findById(id).orElseThrow(() -> new RuntimeException("Point not found"));
+        return pointService.getPointById(id);
     }
 
-    @PostMapping
-    public Point createPoint(@RequestBody Point point) {
-        return pointRepository.save(point);
+    @GetMapping
+    public List<Point> getAllPoints() {
+        return pointService.getAllPoints();
     }
 
     @PutMapping("/{id}")
-    public Point updatePoint(@PathVariable Long id, @RequestBody Point pointDetails) {
-        Point point = pointRepository.findById(id).orElseThrow(() -> new RuntimeException("Point not found"));
-        point.setAddress(pointDetails.getAddress());
-        point.setStatus(pointDetails.getStatus());
-        point.setWorkTime(pointDetails.getWorkTime());
-        return pointRepository.save(point);
+    public Point updatePoint(@PathVariable Long id, @RequestBody PointDTO pointDTO) {
+        return pointService.updatePoint(id, pointDTO);
     }
 
     @DeleteMapping("/{id}")
     public void deletePoint(@PathVariable Long id) {
-        Point point = pointRepository.findById(id).orElseThrow(() -> new RuntimeException("Point not found"));
-        pointRepository.delete(point);
+        pointService.deletePoint(id);
     }
 }
