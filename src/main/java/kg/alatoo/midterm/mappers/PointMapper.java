@@ -1,5 +1,6 @@
 package kg.alatoo.midterm.mappers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import kg.alatoo.midterm.dtos.PointDTO;
@@ -20,8 +21,16 @@ public class PointMapper {
                 .build();
     }
 
-    public static Point toEntity(PointDTO pointDTO, List<Order> orders) {
+    public static Point toEntity(PointDTO pointDTO) {
         if (pointDTO == null) return null;
+    
+        List<Order> orders = new ArrayList<>();
+        if (pointDTO.getOrderIds() != null) {
+            for (Long orderIter : pointDTO.getOrderIds()) {
+                orders.add(Order.builder().id(orderIter).build());
+            }
+        }
+    
         return Point.builder()
                 .id(pointDTO.getId())
                 .address(pointDTO.getAddress())
@@ -30,4 +39,5 @@ public class PointMapper {
                 .orders(orders)
                 .build();
     }
+    
 }

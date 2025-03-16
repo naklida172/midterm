@@ -1,5 +1,6 @@
 package kg.alatoo.midterm.mappers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import kg.alatoo.midterm.dtos.UserDTO;
@@ -22,8 +23,16 @@ public class UserMapper {
                 .build();
     }
 
-    public static User toEntity(UserDTO userDTO, List<Seller> sellers) {
+    public static User toEntity(UserDTO userDTO) {
         if (userDTO == null) return null;
+
+        List<Seller> sellers = new ArrayList<>();
+        if (userDTO.getSellerIds() != null) {
+            for (Long sellerId : userDTO.getSellerIds()) {
+                sellers.add(Seller.builder().id(sellerId).build());
+            }
+        }
+
         return User.builder()
                 .id(userDTO.getId())
                 .name(userDTO.getName())

@@ -20,8 +20,11 @@ public class OrderMapper {
                 .build();
     }
 
-    public static Order toEntity(OrderDTO orderDTO, Product product, Point point, User user) {
+    public static Order toEntity(OrderDTO orderDTO) {
         if (orderDTO == null) return null;
+        Product product = Product.builder().id(orderDTO.getProductId()).build();
+        Point point = Point.builder().id(orderDTO.getPointId()).build();
+        User user = User.builder().id(orderDTO.getUserId()).build();
         return Order.builder()
                 .id(orderDTO.getId())
                 .orderDate(orderDTO.getOrderDate())
@@ -32,4 +35,5 @@ public class OrderMapper {
                 .user(user)
                 .build();
     }
+    
 }

@@ -1,5 +1,6 @@
 package kg.alatoo.midterm.mappers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import kg.alatoo.midterm.dtos.SellerDTO;
@@ -21,13 +22,28 @@ public class SellerMapper {
                 .build();
     }
 
-    public static Seller toEntity(SellerDTO sellerDTO, List<User> users, List<Product> products) {
-        if (sellerDTO == null) return null;
-        return Seller.builder()
-                .id(sellerDTO.getId())
-                .name(sellerDTO.getName())
-                .user(users)
-                .product(products)
-                .build();
+    public static Seller toEntity(SellerDTO sellerDTO) {
+    if (sellerDTO == null) return null;
+
+    List<User> users = new ArrayList<>();
+    if (sellerDTO.getUserIds() != null) {
+        for (Long userId : sellerDTO.getUserIds()) {
+            users.add(User.builder().id(userId).build());
+        }
+    }
+
+    List<Product> products = new ArrayList<>();
+    if (sellerDTO.getProductIds() != null) {
+        for (Long productId : sellerDTO.getProductIds()) {
+            products.add(Product.builder().id(productId).build());
+        }
+    }
+
+    return Seller.builder()
+            .id(sellerDTO.getId())
+            .name(sellerDTO.getName())
+            .user(users)
+            .product(products)
+            .build();
     }
 }
