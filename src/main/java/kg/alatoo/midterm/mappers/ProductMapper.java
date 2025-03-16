@@ -25,15 +25,15 @@ public class ProductMapper {
 
     public static Product toEntity(ProductDTO productDTO) {
         if (productDTO == null) return null;
-
-        Seller seller = Seller.builder().id(productDTO.getSellerId()).build();
+    
+        Seller seller = productDTO.getSellerId() != null ? Seller.builder().id(productDTO.getSellerId()).build() : null;
         List<Tag> tags = new ArrayList<>();
         if (productDTO.getTagIds() != null) {
             for (Long tagId : productDTO.getTagIds()) {
                 tags.add(Tag.builder().id(tagId).build());
             }
         }
-
+    
         return Product.builder()
                 .id(productDTO.getId())
                 .name(productDTO.getName())
