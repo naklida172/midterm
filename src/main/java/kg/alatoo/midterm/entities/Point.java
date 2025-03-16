@@ -26,6 +26,6 @@ public class Point {
     private String address;
     private String status;
     private String workTime;
-    @OneToMany(mappedBy = "point", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "point", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Order> orders;
 }

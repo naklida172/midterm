@@ -1,91 +1,175 @@
 entity,type,value
-Seller,name,BestSeller1
-Seller,userRelation,3;4;5
-Seller,name,TopSeller2
-Seller,userRelation,6;7
-Seller,name,QualityGoods
-Seller,userRelation,8;9
+User,id,1
 User,name,John Doe
 User,username,johndoe
 User,role,Customer
-User,email,john@example.com
-User,phone,555-0101
+User,email,johndoe@example.com
+User,phone,+123456789
+
+User,id,2
 User,name,Jane Smith
 User,username,janesmith
-User,role,Customer
-User,email,jane@example.com
-User,phone,555-0102
+User,role,Vendor
+User,email,janesmith@example.com
+User,phone,+987654321
+
+User,id,3
 User,name,Robert Brown
-User,username,robertb
+User,username,robertbrown
 User,role,Customer
-User,email,robert@example.com
-User,phone,555-0103
-User,name,Emily White
-User,username,emilyw
-User,role,Customer
-User,email,emily@example.com
-User,phone,555-0104
+User,email,robertbrown@example.com
+User,phone,+456789123
+
+User,id,4
+User,name,Linda White
+User,username,lindawhite
+User,role,Vendor
+User,email,lindawhite@example.com
+User,phone,+654321987
+
+User,id,5
 User,name,Michael Green
-User,username,michaelg
-User,role,Customer
-User,email,michael@example.com
-User,phone,555-0105
-User,name,Sarah Blue
-User,username,sarahb
-User,role,Customer
-User,email,sarah@example.com
-User,phone,555-0106
-Product,name,1
-Product,description,UltraWidget is the latest widget
+User,username,michaelgreen
+User,role,Admin
+User,email,michaelgreen@example.com
+User,phone,+789123456
+
+Seller,id,1
+Seller,name,AwesomeSeller
+Seller,userRelation,1
+
+Seller,id,2
+Seller,name,BestSeller
+Seller,userRelation,2
+
+Seller,id,3
+Seller,name,SuperSeller
+Seller,userRelation,3
+
+Seller,id,4
+Seller,name,MegaSeller
+Seller,userRelation,4
+
+Seller,id,5
+Seller,name,GlobalSeller
+Seller,userRelation,5
+
+Product,id,1
+Product,name,SuperWidget
+Product,sellerRelation,1
+Product,description,Top-notch widget for your needs
 Product,rating,5
-Product,tagRelation,11;12;13
-Product,name,PowerGadget,2
-Product,description,High performance gadget
+Product,tagRelation,1;2
+
+Product,id,2
+Product,name,MegaWidget
+Product,sellerRelation,2
+Product,description,Enhanced widget with extra features
 Product,rating,4
-Product,tagRelation,12;13
-Product,name,MegaTool,3
-Product,description,All-in-one tool for professionals
+Product,tagRelation,2;3
+
+Product,id,3
+Product,name,UltraWidget
+Product,sellerRelation,3
+Product,description,Ultra-performance widget for professionals
+Product,rating,4
+Product,tagRelation,1;3
+
+Product,id,4
+Product,name,MiniWidget
+Product,sellerRelation,4
+Product,description,Compact and affordable widget
+Product,rating,3
+Product,tagRelation,1;2;3
+
+Product,id,5
+Product,name,TurboWidget
+Product,sellerRelation,5
+Product,description,High-speed widget for enthusiasts
 Product,rating,5
-Product,tagRelation,11;13
+Product,tagRelation,2;3
+
+Tag,id,1
 Tag,name,Electronics
-Tag,description,Gadgets and electronic devices
-Tag,name,Innovative
-Tag,description,Cutting-edge products
-Tag,name,Premium
-Tag,description,High quality and performance
-Point,address,101 Main Street
-Point,status,Active
-Point,workTime,8 AM - 8 PM
-Point,address,202 Side Avenue
-Point,status,Active
+Tag,description,Electronic gadgets and components
+
+Tag,id,2
+Tag,name,Gadgets
+Tag,description,Latest innovative gadgets
+
+Tag,id,3
+Tag,name,NewArrivals
+Tag,description,Freshly released products
+
+Tag,id,4
+Tag,name,TopRated
+Tag,description,Highly rated and reviewed items
+
+Tag,id,5
+Tag,name,Discounted
+Tag,description,Items currently on sale
+
+Point,id,1
+Point,address,123 Main St
+Point,status,Open
+Point,workTime,9 AM - 5 PM
+
+Point,id,2
+Point,address,456 Elm St
+Point,status,Closed
+Point,workTime,10 AM - 6 PM
+
+Point,id,3
+Point,address,789 Oak Rd
+Point,status,Open
+Point,workTime,8 AM - 4 PM
+
+Point,id,4
+Point,address,101 Pine Ave
+Point,status,Open
+Point,workTime,10 AM - 5 PM
+
+Point,id,5
+Point,address,202 Cedar Dr
+Point,status,Closed
 Point,workTime,9 AM - 6 PM
-Order,orderDate,2025-04-01
-Order,orderProduct,4
-Order,orderPoint,17
-Order,orderUser,3
+
+Order,id,1
+Order,orderDate,2025-03-16
 Order,quantity,2
+Order,productRelation,1
+Order,pointRelation,1
+Order,userRelation,1
 Order,status,Pending
-Order,orderDate,2025-04-02
-Order,orderProduct,7
-Order,orderPoint,18
-Order,orderUser,4
-Order,quantity,1
-Order,status,Completed
-Order,orderDate,2025-04-03
-Order,orderProduct,7
-Order,orderPoint,18
-Order,orderUser,5
+
+Order,id,2
+Order,orderDate,2025-03-17
 Order,quantity,3
-Order,status,Shipped
-Order,orderDate,2025-04-05
-Order,orderProduct,4
-Order,orderPoint,17
-Order,orderUser,8
-Order,quantity,5
-Order,status,Processing
-Order,orderDate,2025-04-06
-Order,orderProduct,7
-Order,orderPoint,18
-Order,orderUser,9
+Order,productRelation,2
+Order,pointRelation,2
+Order,userRelation,2
+Order,status,Completed
+
+Order,id,3
+Order,orderDate,2025-03-18
 Order,quantity,1
+Order,productRelation,3
+Order,pointRelation,3
+Order,userRelation,3
 Order,status,Pending
+
+Order,id,4
+Order,orderDate,2025-03-19
+Order,quantity,4
+Order,productRelation,4
+Order,pointRelation,4
+Order,userRelation,4
+Order,status,Cancelled
+
+Order,id,5
+Order,orderDate,2025-03-20
+Order,quantity,5
+Order,productRelation,5
+Order,pointRelation,5
+Order,userRelation,5
+Order,status,Shipped

@@ -25,6 +25,6 @@ public class Tag {
     private long id;
     private String name;
     private String description;
-    @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "tags", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Product> products;
 }

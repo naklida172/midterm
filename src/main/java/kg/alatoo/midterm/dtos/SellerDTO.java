@@ -15,4 +15,5 @@ public class SellerDTO {
     private Long id;
     private String name;
     private List<Long> userIds; // List of FK to Users
+    private List<Long> productIds;
 }
