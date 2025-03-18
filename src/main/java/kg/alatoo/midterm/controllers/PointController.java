@@ -5,9 +5,11 @@ import kg.alatoo.midterm.entities.Point;
 import kg.alatoo.midterm.services.PointService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.util.List;
 
+@EnableWebMvc
 @RestController
 @RequestMapping("/api/points")
 public class PointController {

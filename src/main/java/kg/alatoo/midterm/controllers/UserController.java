@@ -5,9 +5,11 @@ import kg.alatoo.midterm.entities.User;
 import kg.alatoo.midterm.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.util.List;
 
+@EnableWebMvc
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
