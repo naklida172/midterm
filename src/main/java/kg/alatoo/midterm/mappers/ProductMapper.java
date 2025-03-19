@@ -35,7 +35,6 @@ public class ProductMapper {
         }
     
         return Product.builder()
-                .id(productDTO.getId())
                 .name(productDTO.getName())
                 .description(productDTO.getDescription())
                 .rating(productDTO.getRating())

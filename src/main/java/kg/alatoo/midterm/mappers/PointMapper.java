@@ -32,7 +32,6 @@ public class PointMapper {
         }
     
         return Point.builder()
-                .id(pointDTO.getId())
                 .address(pointDTO.getAddress())
                 .status(pointDTO.getStatus())
                 .workTime(pointDTO.getWorkTime())

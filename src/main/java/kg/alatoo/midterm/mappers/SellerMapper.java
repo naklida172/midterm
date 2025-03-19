@@ -40,7 +40,6 @@ public class SellerMapper {
     }
 
     return Seller.builder()
-            .id(sellerDTO.getId())
             .name(sellerDTO.getName())
             .user(users)
             .product(products)

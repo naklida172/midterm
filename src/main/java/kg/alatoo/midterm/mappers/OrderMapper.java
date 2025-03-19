@@ -28,7 +28,6 @@ public class OrderMapper {
         User user = orderDTO.getUserId() != null ? User.builder().id(orderDTO.getUserId()).build() : null;
     
         return Order.builder()
-                .id(orderDTO.getId())
                 .orderDate(orderDTO.getOrderDate())
                 .quantity(orderDTO.getQuantity())
                 .status(orderDTO.getStatus())

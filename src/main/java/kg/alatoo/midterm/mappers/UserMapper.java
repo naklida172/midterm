@@ -34,7 +34,6 @@ public class UserMapper {
         }
 
         return User.builder()
-                .id(userDTO.getId())
                 .name(userDTO.getName())
                 .username(userDTO.getUsername())
                 .role(userDTO.getRole())

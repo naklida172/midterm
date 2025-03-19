@@ -31,7 +31,6 @@ public class TagMapper {
         }
 
         return Tag.builder()
-                .id(tagDTO.getId())
                 .name(tagDTO.getName())
                 .description(tagDTO.getDescription())
                 .products(products)
