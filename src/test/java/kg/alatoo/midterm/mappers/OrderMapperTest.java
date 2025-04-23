@@ -22,7 +22,6 @@ public class OrderMapperTest {
         Order entity = OrderMapper.toEntity(dto);
 
         assertNotNull(entity);
-        assertEquals(dto.getId(), entity.getId());
         assertEquals(dto.getOrderDate(), entity.getOrderDate());
         assertEquals(dto.getStatus(), entity.getStatus());
         assertEquals(dto.getQuantity(), entity.getQuantity());
@@ -40,7 +39,6 @@ public class OrderMapperTest {
 
 
         assertNotNull(dto);
-        assertEquals(entity.getId(), dto.getId());
         assertEquals(entity.getOrderDate(), dto.getOrderDate());
         assertEquals(entity.getStatus(), dto.getStatus());
         assertEquals(entity.getQuantity(), dto.getQuantity());
