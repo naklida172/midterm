@@ -3,10 +3,10 @@ package kg.alatoo.midterm.controllers;
 import kg.alatoo.midterm.dtos.AuthTokenDTO;
 import kg.alatoo.midterm.dtos.LoginRequest;
 import kg.alatoo.midterm.entities.AuthToken;
+import kg.alatoo.midterm.exceptions.InvalidCredentialsException;
 import kg.alatoo.midterm.mappers.AuthTokenMapper;
 import kg.alatoo.midterm.services.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,6 +28,6 @@ public class AuthController {
         if (authToken != null) {
             return ResponseEntity.ok(AuthTokenMapper.toDTO(authToken)); // Returns 200 OK
         }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null); // Correct status for failed login
+        throw new InvalidCredentialsException();
     }
 }
