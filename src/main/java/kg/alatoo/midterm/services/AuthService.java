@@ -1,5 +1,7 @@
 package kg.alatoo.midterm.services;
 
-public class AuthService {
-    
+import kg.alatoo.midterm.entities.AuthToken;
+
+public interface AuthService {
+    AuthToken createAuthToken(String username, String password);
 }
