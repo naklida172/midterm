@@ -144,6 +144,7 @@ public class InitData {
                 User user = User.builder()
                         .name(value)
                         .username(null)
+                        .password(null)
                         .role(null)
                         .email(null)
                         .phone(null)
@@ -172,6 +173,7 @@ public class InitData {
                         userRepository.save(userForPassword);
                     }
                 }
+                break;
     
             case "role":
                 if (currentId != null) {
