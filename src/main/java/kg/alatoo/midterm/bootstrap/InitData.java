@@ -1,13 +1,5 @@
 package kg.alatoo.midterm.bootstrap;
 
-import jakarta.annotation.PostConstruct;
-import jakarta.annotation.PreDestroy;
-import jakarta.transaction.Transactional;
-import kg.alatoo.midterm.entities.*;
-import kg.alatoo.midterm.repositories.*;
-
-import lombok.extern.slf4j.Slf4j;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -19,6 +11,23 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
+import jakarta.transaction.Transactional;
+import kg.alatoo.midterm.entities.Order;
+import kg.alatoo.midterm.entities.Point;
+import kg.alatoo.midterm.entities.Product;
+import kg.alatoo.midterm.entities.Seller;
+import kg.alatoo.midterm.entities.Tag;
+import kg.alatoo.midterm.entities.User;
+import kg.alatoo.midterm.repositories.OrderRepository;
+import kg.alatoo.midterm.repositories.PointRepository;
+import kg.alatoo.midterm.repositories.ProductRepository;
+import kg.alatoo.midterm.repositories.SellerRepository;
+import kg.alatoo.midterm.repositories.TagRepository;
+import kg.alatoo.midterm.repositories.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 
 @Component
 @Slf4j
@@ -154,6 +163,15 @@ public class InitData {
                     }
                 }
                 break;
+
+                case "password":
+                if(currentId != null) {
+                    User userForPassword = users.get(currentId);
+                    if (userForPassword != null) {
+                        userForPassword.setPassword(value);
+                        userRepository.save(userForPassword);
+                    }
+                }
     
             case "role":
                 if (currentId != null) {

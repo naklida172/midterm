@@ -2,6 +2,7 @@ entity,type,value
 User,id,1
 User,name,John Doe
 User,username,johndoe
+User,password,password123
 User,role,Customer
 User,email,johndoe@example.com
 User,phone,+123456789
@@ -9,6 +10,7 @@ User,phone,+123456789
 User,id,2
 User,name,Jane Smith
 User,username,janesmith
+User,password,password123
 User,role,Vendor
 User,email,janesmith@example.com
 User,phone,+987654321
@@ -16,6 +18,7 @@ User,phone,+987654321
 User,id,3
 User,name,Robert Brown
 User,username,robertbrown
+User,password,password123
 User,role,Customer
 User,email,robertbrown@example.com
 User,phone,+456789123
@@ -23,6 +26,7 @@ User,phone,+456789123
 User,id,4
 User,name,Linda White
 User,username,lindawhite
+User,password,password123
 User,role,Vendor
 User,email,lindawhite@example.com
 User,phone,+654321987
@@ -30,6 +34,7 @@ User,phone,+654321987
 User,id,5
 User,name,Michael Green
 User,username,michaelgreen
+User,password,password123
 User,role,Admin
 User,email,michaelgreen@example.com
 User,phone,+789123456
