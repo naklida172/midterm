@@ -1,15 +1,17 @@
 package kg.alatoo.midterm.services.implementation;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import kg.alatoo.midterm.dtos.UserDTO;
 import kg.alatoo.midterm.entities.User;
 import kg.alatoo.midterm.exceptions.ResourceNotFoundException;
 import kg.alatoo.midterm.mappers.UserMapper;
 import kg.alatoo.midterm.repositories.UserRepository;
 import kg.alatoo.midterm.services.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -74,4 +76,47 @@ public class UserServiceImpl implements UserService {
 
         userRepository.deleteById(id);
     }
+
+    @Override
+    public List<UserDTO> getAllUsersDTO() {
+        List<User> users = userRepository.findAll();
+        
+        if (users.isEmpty()) {
+            throw new ResourceNotFoundException("No users found.");
+        }
+
+        return users.stream()
+                    .map(UserMapper::toDTO)
+                    .collect(Collectors.toList());
+    }
+
+    @Override
+    public UserDTO getUserByIdDTO(Long id) {
+        if (id == null) {
+            throw new IllegalArgumentException("ID cannot be null.");
+        }
+    
+        return userRepository.findById(id)
+                .map(UserMapper::toDTO)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
+    }
+    
+    public UserDTO updateUserDTO(Long id, UserDTO userDTO) {
+        if (id == null || userDTO == null) {
+            throw new IllegalArgumentException("ID and UserDTO cannot be null.");
+        }
+    
+        User existingUser = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
+    
+        existingUser.setName(userDTO.getName());
+        existingUser.setUsername(userDTO.getUsername());
+        existingUser.setEmail(userDTO.getEmail());
+        existingUser.setPhone(userDTO.getPhone());
+        existingUser.setRole(userDTO.getRole());
+    
+        User updatedUser = userRepository.save(existingUser);
+        return UserMapper.toDTO(updatedUser);
+    }
+    
 }
