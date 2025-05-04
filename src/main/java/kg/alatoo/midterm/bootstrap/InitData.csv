@@ -39,6 +39,16 @@ User,role,Admin
 User,email,michaelgreen@example.com
 User,phone,+789123456
 
+User,id,6
+User,name,adilkana
+User,description,your description
+User,username,your username
+User,password,123
+User,role,your role
+User,email,test@email.ru
+User,phone,your phone
+User,sellerIds,[]
+
 Seller,id,1
 Seller,name,AwesomeSeller
 Seller,userRelation,1
