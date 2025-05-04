@@ -26,14 +26,17 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
-            throws ServletException, IOException {
-
+        throws ServletException, IOException {
+        String requestURI = request.getRequestURI();
+        // Skip token authentication for OAuth2 login paths
+        if (requestURI.startsWith("/login/oauth2/") || requestURI.startsWith("/oauth2/")) {
+            chain.doFilter(request, response);
+            return;
+        }
         String header = request.getHeader("Authorization");
-
         if (header != null && header.startsWith("Bearer ")) {
             String token = header.substring(7);
             Authentication authRequest = new TokenAuthentication(token);
-
             try {
                 Authentication authResult = authenticationManager.authenticate(authRequest);
                 SecurityContextHolder.getContext().setAuthentication(authResult);
@@ -42,7 +45,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
                 return;
             }
         }
-
         chain.doFilter(request, response);
     }
+
 }
