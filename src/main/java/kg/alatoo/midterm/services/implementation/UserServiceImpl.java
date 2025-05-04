@@ -101,6 +101,7 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
     }
     
+    @Override
     public UserDTO updateUserDTO(Long id, UserDTO userDTO) {
         if (id == null || userDTO == null) {
             throw new IllegalArgumentException("ID and UserDTO cannot be null.");

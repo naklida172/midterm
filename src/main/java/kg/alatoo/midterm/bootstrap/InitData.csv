@@ -47,7 +47,6 @@ User,password,123
 User,role,your role
 User,email,test@email.ru
 User,phone,your phone
-User,sellerIds,[]
 
 Seller,id,1
 Seller,name,AwesomeSeller
