@@ -23,19 +23,19 @@ public class AuthServiceImpl implements AuthService{
 
     @Override
     public AuthToken createAuthToken(String username, String password) {
-        // Optional<User> userOptional = userRepository.findByUsername(username);
+        Optional<User> userOptional = userRepository.findByUsername(username);
 
-        // if (userOptional.isPresent() && User.matches(password, userOptional.get().getPassword())) { //for now there is no password
-        //     UUID token = UUID.randomUUID();
+        if (userOptional.isPresent() && password.equals(userOptional.get().getPassword())) {
+            UUID token = UUID.randomUUID();
 
-        //     AuthToken authToken = AuthToken.builder()
-        //         .user(userOptional.get())
-        //         .token(token)
-        //         .createdAt(new java.util.Date())
-        //         .build();
+            AuthToken authToken = AuthToken.builder()
+                .user(userOptional.get())
+                .token(token)
+                .createdAt(new java.util.Date())
+                .build();
 
-        //     return authTokenRepository.save(authToken);
-        // }
+            return authTokenRepository.save(authToken);
+        }
 
         return null; // Handle failure scenario appropriately
     }
