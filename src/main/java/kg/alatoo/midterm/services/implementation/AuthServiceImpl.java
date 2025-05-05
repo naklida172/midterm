@@ -41,4 +41,25 @@ public class AuthServiceImpl implements AuthService{
 
         return null; // Handle failure scenario appropriately
     }
+
+    @Override
+    public User registerUser(String username, String password, String email) {
+        if (userRepository.existsByUsername(username)) {
+            throw new RuntimeException("Username already taken");
+        }
+        
+        if (userRepository.existsByEmail(email)) {
+            throw new RuntimeException("Email already in use");
+        }
+        
+
+        User user = User.builder()
+            .username(username)
+            .password(password)
+            .email(email)
+            .role("Customer")
+            .build();
+
+        return userRepository.save(user);
+    }
 }
