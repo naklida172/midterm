@@ -42,8 +42,8 @@ public class AuthToken {
     @Column(name = "created_at")
     private Date createdAt;
 
-    // @Column(name = "expires_at")
-    // @Temporal(TemporalType.TIMESTAMP)
-    // private Date expiresAt;
+    @Column(name = "expires_at")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date expiresAt;
 
 }

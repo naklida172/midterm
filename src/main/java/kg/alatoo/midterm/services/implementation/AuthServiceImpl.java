@@ -1,5 +1,6 @@
 package kg.alatoo.midterm.services.implementation;
 
+import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -31,7 +32,8 @@ public class AuthServiceImpl implements AuthService{
             AuthToken authToken = AuthToken.builder()
                 .user(userOptional.get())
                 .token(token)
-                .createdAt(new java.util.Date())
+                .createdAt(new Date())
+                .expiresAt(new Date(System.currentTimeMillis() + 60000))
                 .build();
 
             return authTokenRepository.save(authToken);

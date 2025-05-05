@@ -1,6 +1,8 @@
 package kg.alatoo.midterm.config;
 
+import java.util.Date;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -10,17 +12,35 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import kg.alatoo.midterm.entities.AuthToken;
+import kg.alatoo.midterm.repositories.AuthTokenRepository;
+
 @Component
 public class TokenAuthenticationProvider implements AuthenticationProvider {
 
     @Autowired
     private TokenService tokenService;
 
+    @Autowired
+    private AuthTokenRepository authTokenRepository;
+
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String token = (String) authentication.getCredentials();
-        Optional<UserDetails> userDetails = tokenService.validateToken(token);
 
+        Optional<AuthToken> authTokenOptional = authTokenRepository.findByToken(UUID.fromString(token));
+        if (authTokenOptional.isEmpty()) {
+            throw new BadCredentialsException("Invalid token");
+        }
+
+        AuthToken authToken = authTokenOptional.get();
+
+        // Added expiration check
+        if (authToken.getExpiresAt().before(new Date())) {
+            throw new BadCredentialsException("Token expired");
+        }
+
+        Optional<UserDetails> userDetails = tokenService.validateToken(token);
         if (userDetails.isPresent()) {
             return new TokenAuthentication(userDetails.get(), token, userDetails.get().getAuthorities());
         }

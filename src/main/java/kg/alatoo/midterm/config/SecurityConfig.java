@@ -42,6 +42,7 @@ public class SecurityConfig {
                                 .user(userRepository.findById(6L).orElseThrow(() -> new RuntimeException("User not found!"))) //change later
                                 .token(UUID.randomUUID())
                                 .createdAt(new Date())
+                                .expiresAt(new Date(System.currentTimeMillis() + 60000))
                                 .build();
 
                         authTokenRepository.save(authToken);
