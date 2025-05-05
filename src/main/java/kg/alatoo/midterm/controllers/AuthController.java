@@ -15,7 +15,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import kg.alatoo.midterm.dtos.AuthTokenDTO;
 import kg.alatoo.midterm.dtos.LoginRequest;
 import kg.alatoo.midterm.dtos.RegistrationRequest;
-import kg.alatoo.midterm.dtos.UserDTO;
+import kg.alatoo.midterm.dtos.RegistrationResponseDTO;
 import kg.alatoo.midterm.entities.AuthToken;
 import kg.alatoo.midterm.entities.User;
 import kg.alatoo.midterm.exceptions.InvalidCredentialsException;
@@ -42,10 +42,18 @@ public class AuthController {
     }
 
     @PostMapping("/reg")
-    public ResponseEntity<UserDTO> registerUser(@RequestBody RegistrationRequest request) {
+    public ResponseEntity<RegistrationResponseDTO> registerUser(@RequestBody RegistrationRequest request) {
         User user = authService.registerUser(request.getUsername(), request.getEmail(), request.getPassword());
-        return ResponseEntity.ok(UserMapper.toDTO(user));
+        AuthToken authToken = authService.createAuthToken(request.getUsername(), request.getPassword());
+
+        RegistrationResponseDTO responseDTO = new RegistrationResponseDTO(
+            UserMapper.toDTO(user),
+            AuthTokenMapper.toDTO(authToken)
+        );
+    
+        return ResponseEntity.ok(responseDTO);
     }
+    
 
     // New endpoint to retrieve all stored authentication tokens
     @Autowired
