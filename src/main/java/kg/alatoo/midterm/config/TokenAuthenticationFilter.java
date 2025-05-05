@@ -29,7 +29,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
         throws ServletException, IOException {
         String requestURI = request.getRequestURI();
         // Skip token authentication for OAuth2 login paths
-        if (requestURI.startsWith("/login/oauth2/") || requestURI.startsWith("/oauth2/")) {
+        if (requestURI.contains("/login/oauth2/") || requestURI.contains("/oauth2/")) {
             chain.doFilter(request, response);
             return;
         }
